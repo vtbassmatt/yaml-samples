@@ -30,7 +30,6 @@ jobs:
 
 - job:
   dependsOn: buildAndTest
-  condition: succeeded()
 - task: Npm@1
   inputs:
      command: publish

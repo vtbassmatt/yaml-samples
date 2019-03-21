@@ -1,0 +1,50 @@
+stages:
+- stage: build
+  jobs:
+  - job: build
+    pool: 
+      vmImage: ubuntu-16.04
+    steps:
+    - use: node
+      version: 10.x
+    - script: npm install
+    - script: npm test
+    - upload: |
+        **\*.js
+        package.json 
+
+- stage: staging
+  dependsOn: build
+  jobs:
+  - deployment: deploy-to-staging
+    environment: Contoso
+    pool:
+      vmImage: ubuntu-16.04
+    strategy:
+      runOnce:
+        deploy:
+        - task: AzureWebApp@1
+          inputs:
+            azureSubscription: 'node-app'
+            appType: 'webAppLinux'
+            appName: 'linuxmvptest19'
+            runtimeStack: 'NODE|10.1'
+            startUpCommand: 'npm run start'
+
+- stage: prod
+  dependsOn: build
+  jobs:
+  - deployment: deploy-to-prod
+    environment: Contoso
+    pool:
+      vmImage: ubuntu-16.04
+    strategy:
+      runOnce:
+        deploy:
+        - task: AzureWebApp@1
+          inputs:
+            azureSubscription: 'node-app-parallel'
+            appType: 'webAppLinux'
+            appName: 'linuxparalleltest19'
+            runtimeStack: 'NODE|10.1'
+            startUpCommand: 'npm run start'

@@ -18,7 +18,6 @@ jobs:
 
 - job: publish
   dependsOn: buildAndTest
-  condition: succeeded()
   steps:
   - use: node
     auth: my-npm-registry-svc-connection

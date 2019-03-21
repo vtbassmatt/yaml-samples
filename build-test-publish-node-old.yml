@@ -18,7 +18,6 @@ steps:
     summaryFileLocation: '**/coverage/cobertura-coverage.xml'
     reportDirectory: '**/parcel-bundler/coverage'
 - task: Npm@1
-  condition: succeeded()
   inputs:
     command: publish
     publishEndpoint: my-npm-registry-svc-connection
