@@ -1,0 +1,38 @@
+jobs:
+- job: buildAndTest
+  pool: 
+    vmImage: ubuntu-16.04
+  strategy:
+    matrix:
+      node_6_x:
+        node_version: 6.x
+      node_8_x:
+        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
+  - script: npm install
+  - script: npm test
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: '**/junit-*.xml'
+      testRunTitle: TestRun ${{ parameters.name }} $(node_version)
+  - task: PublishCodeCoverageResults@1
+    condition: succeededOrFailed()
+    inputs: 
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '**/coverage/cobertura-coverage.xml'
+      reportDirectory: '**/parcel-bundler/coverage'
+
+- job:
+  dependsOn: buildAndTest
+  condition: succeeded()
+- task: Npm@1
+  inputs:
+     command: publish
+     publishRegistry: useExternalRegistry
+     publishEndpoint: https://my.npmregistry.com

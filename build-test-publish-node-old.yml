@@ -1,0 +1,24 @@
+pool: 
+  vmImage: ubuntu-16.04
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: 8.x
+- script: npm install
+- script: npm test
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: '**/junit-*.xml'
+    testRunTitle: TestRun ${{ parameters.name }}
+- task: PublishCodeCoverageResults@1
+  condition: succeededOrFailed()
+  inputs: 
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '**/coverage/cobertura-coverage.xml'
+    reportDirectory: '**/parcel-bundler/coverage'
+- task: Npm@1
+  condition: succeeded()
+  inputs:
+    command: publish
+    publishEndpoint: my-npm-registry-svc-connection

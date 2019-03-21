@@ -1,0 +1,10 @@
+pool: 
+  vmImage: ubuntu-16.04
+steps:
+- use: node
+  version: 8.x
+  auth: my-npm-registry-svc-connection
+- script: npm install
+- script: npm test
+- script: npm publish
+  condition: succeeded()

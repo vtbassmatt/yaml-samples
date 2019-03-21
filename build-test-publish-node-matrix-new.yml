@@ -1,0 +1,25 @@
+jobs:
+- job: buildAndTest
+  pool: 
+    vmImage: ubuntu-16.04
+  strategy:
+    matrix:
+      node_6_x:
+        node_version: 6.x
+      node_8_x:
+        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
+  steps:
+  - use: node
+    version: $(node_version)
+  - script: npm install
+  - script: npm test
+
+- job: publish
+  dependsOn: buildAndTest
+  condition: succeeded()
+  steps:
+  - use: node
+    auth: my-npm-registry-svc-connection
+  - script: npm publish
