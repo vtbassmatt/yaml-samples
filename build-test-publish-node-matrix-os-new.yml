@@ -2,17 +2,17 @@ jobs:
 - job: buildAndTest
   strategy:
     matrix:
-      node_6_x:
-        node_version: 6.x
-      node_8_x:
-        node_version: 8.x
-      node_10_x:
-        node_version: 10.x
+      linux:
+        imageName: 'ubuntu-16.04'
+      mac:
+        imageName: 'macos-10.13'
+      windows:
+        imageName: 'vs2017-win2016'
   pool:
-    vmImage: ubuntu-16.04
+    vmImage: $(imageName)
   steps:
   - use: node
-    version: $(node_version)
+    version: 10.x
   - script: npm install
   - script: npm test
 

@@ -9,15 +9,14 @@ stages:
       version: 10.x
     - script: npm install
     - script: npm test
-    - upload: |
-        **\*.js
-        package.json 
+    - script: zip -r app.zip '$(System.DefaultWorkingDirectory)'
+    - upload: app.zip
 
 - stage: staging
   dependsOn: build
   jobs:
   - deployment: deploy-to-staging
-    environment: Contoso
+    environment: contoso-webapp-staging
     pool:
       vmImage: ubuntu-16.04
     strategy:
@@ -32,10 +31,10 @@ stages:
             startUpCommand: 'npm run start'
 
 - stage: prod
-  dependsOn: build
+  dependsOn: staging
   jobs:
   - deployment: deploy-to-prod
-    environment: Contoso
+    environment: contoso-webapp-prod
     pool:
       vmImage: ubuntu-16.04
     strategy:

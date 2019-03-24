@@ -1,7 +1,5 @@
 jobs:
 - job: buildAndTest
-  pool: 
-    vmImage: ubuntu-16.04
   strategy:
     matrix:
       node_6_x:
@@ -10,6 +8,8 @@ jobs:
         node_version: 8.x
       node_10_x:
         node_version: 10.x
+  pool: 
+    vmImage: ubuntu-16.04
   steps:
   - task: NodeTool@0
     inputs:
