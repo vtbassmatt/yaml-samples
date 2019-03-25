@@ -17,14 +17,15 @@ Improvement in the new syntax
 ### Build and test across 3 node version and publish package if successful
 This is example is more typical of a node package because it test across multiple node versions.
 
-[current syntax](build-test-publish-node-matrix-old.yml)
-[new syntax](build-test-publish-node-matrix-new.yml)
+Samples
+* [current syntax](build-test-publish-node-matrix-old.yml)
+* [new syntax](build-test-publish-node-matrix-new.yml)
 
 
 
 ### Build and test across 3 OSes and publish package if successful
-This is example is what we see most of the top node packages do because it tests on Linux, macOS, and Windows. Obviously, this requires VM support because macOS doesn't support containers and 
-+-
+This is example is what we see most of the top node packages do because it tests on Linux, macOS, and Windows.
 
-[current syntax](build-test-publish-node-matrix-old.yml)
-[new syntax](build-test-publish-node-matrix-new.yml)
+Samples
+* [current syntax](build-test-publish-node-matrix-old.yml)
+* [new syntax](build-test-publish-node-matrix-new.yml)
